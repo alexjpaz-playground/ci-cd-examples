@@ -1,0 +1,10 @@
+#!/bin/bash
+NOW_ALIAS=cd-ci-example.now.sh                                                                                    
+now () { 
+    node_modules/.bin/now $@ 
+}                                                                       
+if [ "${CIRCLE_BRANCH}" == "master" ]; then                                                                    
+    yarn add now                                                                                             
+    # deploy to now
+    NOW_URL=$(now --public -t ${NOW_TOKEN} -e BUILD_COMMIT=${CIRCLE_SHA1}) && now -t ${NOW_TOKEN} alias set ${NOW_URL} ${NOW_ALIAS}
+fi    
